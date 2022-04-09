@@ -7,14 +7,13 @@ export async function fetchTodo(): Promise<Todo[]> {
 }
 
 export async function deleteTodo(todoId: string): Promise<string> {
-  return await (
-    await fetch(`${BASE_URL}/${todoId}`, { method: 'DELETE' })
-  ).json();
+  await (await fetch(`${BASE_URL}/${todoId}`, { method: 'DELETE' })).json();
+  return todoId;
 }
 
-export async function addTodo(todoId: string, todo: Todo): Promise<Todo> {
+export async function addTodo(todo: Todo): Promise<Todo> {
   return await (
-    await fetch(`${BASE_URL}/${todoId}`, {
+    await fetch(BASE_URL, {
       method: 'POST',
       body: JSON.stringify(todo),
       headers: {
