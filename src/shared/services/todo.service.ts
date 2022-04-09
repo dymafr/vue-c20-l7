@@ -20,6 +20,9 @@ export async function updateTodo(
     await fetch(`${BASE_URL}/${todoId}`, {
       method: 'PATCH',
       body: JSON.stringify(update),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
   ).json();
 }
