@@ -7,29 +7,31 @@
         <button class="btn btn-primary mr-20" @click="addTodo">Ajouter</button>
       </div>
       <ul>
-        <li v-for="(todo, index) in todos" class="card" :key="todo.content">
+        <li v-for="todo in todoStore.todoList" class="card" :key="todo.content">
           <div
             class="d-flex align-items-center"
             v-if="!todo.editMode"
-            @click="toggleTodo(index)"
+            @click="updateTodo(todo._id!, { done: !todo.done })"
           >
             <input class="mr-20" :checked="todo.done" type="checkbox" />
             <span class="flex-fill">{{ todo.content }}</span>
             <button
-              @click.stop="updateTodo(index, { editMode: true })"
+              @click.stop="updateTodo(todo._id!, { editMode: true })"
               class="btn btn-primary mr-20"
             >
               Editer
             </button>
-            <button @click.stop="deleteTodo(index)" class="btn btn-danger">
+            <button @click.stop="deleteTodo(todo._id!)" class="btn btn-danger">
               Supprimer
             </button>
           </div>
           <div class="d-flex align-items-center" v-else>
             <TodoForm
               :content="todo.content"
-              @cancel="updateTodo(index, { editMode: false })"
-              @update="updateTodo(index, { editMode: false, content: $event })"
+              @cancel="updateTodo(todo._id!, { editMode: false })"
+              @update="
+                updateTodo(todo._id!, { editMode: false, content: $event })
+              "
             />
           </div>
         </li>
@@ -47,23 +49,19 @@ import TodoForm from './components/TodoForm.vue';
 const input = ref<string>('');
 
 const todoStore = useTodos();
-const todos = todoStore.todoList;
+todoStore.fetchTodo();
 
 function addTodo() {
   todoStore.addTodo(input.value);
   input.value = '';
 }
 
-function deleteTodo(index: number) {
-  todoStore.deleteTodo(index);
+function deleteTodo(todoId: string) {
+  todoStore.deleteTodo(todoId);
 }
 
-function toggleTodo(index: number) {
-  todoStore.toggleTodo(index);
-}
-
-function updateTodo(index: number, update: Partial<Todo>) {
-  todoStore.updateTodo(index, update);
+function updateTodo(todoId: string, update: Partial<Todo>) {
+  todoStore.updateTodo(todoId, update);
 }
 </script>
 

@@ -23,7 +23,11 @@ export const useTodos = defineStore('todos', {
   actions: {
     async fetchTodo() {
       const todos = await fetchTodo();
-      this.todos = todos;
+      if (Array.isArray(todos)) {
+        this.todos = todos;
+      } else {
+        this.todos = [todos];
+      }
     },
     async addTodo(content: string) {
       const newTodo = await addTodo({
