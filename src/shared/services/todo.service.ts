@@ -12,6 +12,18 @@ export async function deleteTodo(todoId: string): Promise<string> {
   ).json();
 }
 
+export async function addTodo(todoId: string, todo: Todo): Promise<Todo> {
+  return await (
+    await fetch(`${BASE_URL}/${todoId}`, {
+      method: 'POST',
+      body: JSON.stringify(todo),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  ).json();
+}
+
 export async function updateTodo(
   todoId: string,
   update: Partial<Todo>

@@ -16,8 +16,9 @@ export const useTodos = defineStore('todos', {
     },
   },
   actions: {
-    async fetchTodo(content: string) {
+    async fetchTodo() {
       const todos = await fetchTodo();
+      this.todos = todos;
     },
     addTodo(content: string) {
       this.todos.push({
