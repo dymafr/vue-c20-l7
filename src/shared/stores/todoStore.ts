@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import { Todo } from '../interfaces/todo.interface';
-import { fetchTodo } from '../services/todo.service';
+import {
+  fetchTodo,
+  addTodo,
+  deleteTodo,
+  updateTodo,
+} from '../services/todo.service';
 
 interface TodoState {
   todos: Todo[];
@@ -20,24 +25,25 @@ export const useTodos = defineStore('todos', {
       const todos = await fetchTodo();
       this.todos = todos;
     },
-    addTodo(content: string) {
-      this.todos.push({
+    async addTodo(content: string) {
+      const newTodo = await addTodo({
         content,
         done: false,
         editMode: false,
       });
+      this.todos.push(newTodo);
     },
-    deleteTodo(index: number) {
-      this.todos.splice(index, 1);
+    async deleteTodo(todoId: string) {
+      await deleteTodo(todoId);
+      this.todos = this.todos.filter((todo) => todo._id !== todoId);
     },
-    toggleTodo(index: number) {
-      this.todos[index].done = !this.todos[index].done;
-    },
-    updateTodo(index: number, update: Partial<Todo>) {
-      this.todos[index] = {
-        ...this.todos[index],
+    async updateTodo(todoId: string, update: Partial<Todo>) {
+      const todoIndex = this.todos.findIndex((todo) => todo._id === todoId);
+      const updatedTodo = await updateTodo(todoId, {
+        ...this.todos[todoIndex],
         ...update,
-      };
+      } as Todo);
+      this.todos[todoIndex] = updatedTodo;
     },
   },
 });

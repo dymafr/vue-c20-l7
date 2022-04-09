@@ -23,14 +23,11 @@ export async function addTodo(todo: Todo): Promise<Todo> {
   ).json();
 }
 
-export async function updateTodo(
-  todoId: string,
-  update: Partial<Todo>
-): Promise<Todo> {
+export async function updateTodo(todoId: string, todo: Todo): Promise<Todo> {
   return await (
     await fetch(`${BASE_URL}/${todoId}`, {
       method: 'PATCH',
-      body: JSON.stringify(update),
+      body: JSON.stringify(todo),
       headers: {
         'Content-Type': 'application/json',
       },
