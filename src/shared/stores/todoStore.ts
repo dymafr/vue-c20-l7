@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { Todo } from '../interfaces/todo.interface';
+import { fetchTodo } from '../services/todo.service';
 
 interface TodoState {
   todos: Todo[];
@@ -15,6 +16,9 @@ export const useTodos = defineStore('todos', {
     },
   },
   actions: {
+    async fetchTodo(content: string) {
+      const todos = await fetchTodo();
+    },
     addTodo(content: string) {
       this.todos.push({
         content,
