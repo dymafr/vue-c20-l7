@@ -66,7 +66,7 @@ function updateTodo(todoId: string, update: Partial<Todo>) {
 </script>
 
 <style lang="scss">
-@import './assets/scss/base.scss';
+@use './assets/scss/base.scss';
 
 .container {
   width: 600px;
